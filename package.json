@@ -1,0 +1,22 @@
+{
+  "name": "blog-automatizado-southcorp",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Pipeline automatizado de pautas e posts do blog Southcorp (Anthropic API + WordPress REST API)",
+  "main": "src/run.js",
+  "scripts": {
+    "generate": "node src/run.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BeatrizMallagoli08/blog-automatizado-southcorp.git"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.111.0"
+  }
+}
