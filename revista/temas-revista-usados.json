@@ -1,4 +1,13 @@
 {
   "_comentario": "Histórico de edições da revista Sinduscon, usado para evitar repetir tema/categoria em sequência. Atualizado e commitado automaticamente a cada execução do workflow revista.yml.",
-  "edicoes": []
+  "edicoes": [
+    {
+      "tema": "Industrialização da construção e sistemas offsite (pré-fabricação, construção modular e projeto orientado à manufatura e montagem - DfMA)",
+      "categoria": "Produtividade e Custos",
+      "mesAno": "julho de 2026",
+      "data": "2026-07-28T19:40:34.064Z",
+      "googleDocUrl": null,
+      "clickupTaskUrl": "https://app.clickup.com/t/86e2hpr3m"
+    }
+  ]
 }
