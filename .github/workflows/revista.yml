@@ -1,0 +1,55 @@
+name: Gerar edição da revista Sinduscon
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    # 12:00 UTC todo dia 25 = 09:00 em Brasília (UTC-3).
+    # Dá cerca de uma semana até o início do mês seguinte para revisar,
+    # aprovar e diagramar antes do envio pra gráfica.
+    - cron: "0 12 25 * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: generate-revista
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Rodar pipeline da revista
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          GOOGLE_DRIVE_FOLDER_ID_REVISTA: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID_REVISTA }}
+          CLICKUP_API_TOKEN: ${{ secrets.CLICKUP_API_TOKEN }}
+          CLICKUP_LIST_ID: ${{ secrets.CLICKUP_LIST_ID }}
+          DISCORD_WEBHOOK_URL_REVISTA: ${{ secrets.DISCORD_WEBHOOK_URL_REVISTA }}
+        run: npm run generate:revista
+
+      - name: Commitar temas-revista-usados.json atualizado
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add revista/temas-revista-usados.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: atualiza temas-revista-usados.json após execução do pipeline"
+            git push
+          else
+            echo "Nenhuma mudança em temas-revista-usados.json para commitar."
+          fi

@@ -6,7 +6,8 @@
   "description": "Pipeline automatizado de pautas e posts do blog Southcorp (Anthropic API + WordPress REST API)",
   "main": "src/run.js",
   "scripts": {
-    "generate": "node src/run.js"
+    "generate": "node src/run.js",
+    "generate:revista": "node revista/src/run.js"
   },
   "engines": {
     "node": ">=20"

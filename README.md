@@ -2,6 +2,8 @@
 
 Pipeline que roda semanalmente no GitHub Actions e gera os 5 posts da semana (segunda a sexta) como rascunhos **pendentes de revisão** no WordPress — nunca publica sozinho.
 
+> Este repositório também hospeda o sistema "irmão" da [Revista Sinduscon](revista/README.md) (`/revista`), com cadência mensal e saída em Google Doc + ClickUp. Reaproveita a chamada à Anthropic API, a autenticação do Google Docs e o envio ao Discord já usados aqui.
+
 ## Como funciona
 
 1. Segue a fila de pautas pré-definida em [`data/pautas-cronograma.json`](data/pautas-cronograma.json) (códigos S012–S046). Quando a fila acaba, passa a pesquisar e propor pautas novas seguindo a mesma lógica (frente por dia da semana + proporção de produto 40% Garantia / 30% Engenharia / 30% RC).
