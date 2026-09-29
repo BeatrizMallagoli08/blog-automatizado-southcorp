@@ -43,8 +43,8 @@ async function produzirPauta({ config, client, cronograma, status, pauta, writer
     );
   }
 
-  const contentComCredito = `${post.contentHtml}\n\n`;
-
+  const contentComCredito = `${post.contentHtml}\n\n<!-- ${image.credit} -->`;
+  
   const { id: postId, editLink } = await createPost(config, {
     title: post.title,
     contentHtml: contentComCredito,
