@@ -1,12 +1,14 @@
 # Blog Automatizado — Southcorp
 
-Pipeline que roda semanalmente no GitHub Actions e gera os 5 posts da semana (segunda a sexta) como rascunhos **pendentes de revisão** no WordPress — nunca publica sozinho.
+Pipeline que roda semanalmente no GitHub Actions e escreve os textos da semana como rascunhos **pendentes de revisão** no WordPress — nunca publica sozinho.
+
+A semana tem **4 vagas**: 2 de **Seguro Garantia** (posicionamento) e 2 de **tema diverso**. Cada vaga rende **3 pautas diferentes entre si** — assuntos distintos, não versões do mesmo texto —, para escolha editorial. São **12 rascunhos por semana**, dos quais se publica 4.
 
 > Este repositório também hospeda o sistema "irmão" da [Revista Sinduscon](revista/README.md) (`/revista`), com cadência mensal e saída em Google Doc + ClickUp. Reaproveita a chamada à Anthropic API, a autenticação do Google Docs e o envio ao Discord já usados aqui.
 
 ## Como funciona
 
-1. Segue a fila de pautas pré-definida em [`data/pautas-cronograma.json`](data/pautas-cronograma.json) (códigos S012–S046). Quando a fila acaba, passa a pesquisar e propor pautas novas seguindo a mesma lógica (frente por dia da semana + proporção de produto 40% Garantia / 30% Engenharia / 30% RC).
+1. Monta as 4 vagas da semana a partir de `semana.vagas` em [`data/pautas-cronograma.json`](data/pautas-cronograma.json), preenchendo cada uma com 3 pautas do produto daquela vaga. Usa primeiro a fila pré-escrita (códigos S012–S046, 20 pautas); quando ela acaba **para aquele produto**, pesquisa e propõe pautas novas, recebendo a lista do que já foi coberto para não repetir assunto. As vagas de tema diverso rodam entre Engenharia, RC e Institucional.
 2. Para cada pauta: pesquisa dados atuais com a tool `web_search` da Anthropic, depois redige o artigo completo usando o [prompt do redator SEO](data/prompt-agente-redator-seo.md) + o [manual de marca](data/referencia-tom-de-voz-marca-south.md) como contexto.
 3. Busca uma imagem de capa na Unsplash pela palavra-chave do post.
 4. Sobe a imagem e cria o post no WordPress via REST API, status `pending`, com a imagem definida como destaque.
@@ -24,17 +26,16 @@ Controle de fila: [`status.json`](status.json), atualizado e commitado automatic
 3. Instale um plugin leve de gestão de papéis, ex. **"User Role Editor"**, e libere apenas a capability **`upload_files`** para o papel Contributor — sem tocar em `publish_posts` nem `manage_categories`. Isso permite que o robô suba a imagem de capa, mas nunca publique sozinho.
 
 ### 2. Categorias no WordPress
-O script mapeia a "frente" do dia da semana para uma categoria pelo **slug**. Crie (ou renomeie categorias existentes) com estes slugs antes da primeira execução — se o slug não existir, o post é criado sem categoria (não trava o pipeline):
+O script escolhe a categoria pelo **produto** da pauta, usando o slug definido em `categoriaPorProduto` no [`data/pautas-cronograma.json`](data/pautas-cronograma.json). Os slugs abaixo **já existem** no site da Southcorp — se algum for renomeado lá, atualize aqui. Se o slug não existir, o post é criado sem categoria (não trava o pipeline):
 
-| Dia | Frente | Slug esperado |
-|---|---|---|
-| Segunda | Newsjacking & Visão de Futuro | `newsjacking` |
-| Terça | Proteção de Pessoas & Cultura (Southlife) | `southlife` |
-| Quarta | Linhas Financeiras & Riscos Invisíveis | `governanca` |
-| Quinta | Riscos Patrimoniais & Operacionais | `engenharia` |
-| Sexta | Bastidores, Cultura do Sul & Prova Social | `bastidores` |
+| Produto da pauta | Slug no WordPress |
+|---|---|
+| Garantia | `seguro-garantia` |
+| Engenharia | `seguro-risco-engenharia` |
+| RC | `seguro-responsabilidade-civil` |
+| Institucional | `geral` |
 
-Para mudar o mapeamento, edite `categoriaSlug` em [`data/pautas-cronograma.json`](data/pautas-cronograma.json) (chave `grade`).
+A `grade` de frentes por dia da semana continua no arquivo, mas hoje define só o **ângulo editorial** sugerido às pautas geradas (notícia, pessoas, governança, operação, bastidores), não a categoria.
 
 ### 3. Unsplash
 Crie uma conta de desenvolvedor em [unsplash.com/developers](https://unsplash.com/developers), registre uma aplicação e copie a **Access Key** (gratuita).
@@ -78,7 +79,9 @@ node --env-file=.env src/run.js
 
 ## Frequência
 
-O workflow roda 1x por semana (segunda 00:00 UTC = domingo 21:00 em Brasília) e gera os 5 posts da semana de uma vez, todos como rascunho pendente, para revisão em bloco. Para mudar a frequência, edite o `cron` em [`.github/workflows/generate-posts.yml`](.github/workflows/generate-posts.yml). Para gerar menos/mais posts por rodada, ajuste `POSTS_PER_RUN` (padrão 5) como variável de ambiente/secret.
+O workflow roda 1x por semana (segunda 00:00 UTC = domingo 21:00 em Brasília) e escreve os 12 rascunhos da semana de uma vez, para revisão em bloco. Para mudar a frequência, edite o `cron` em [`.github/workflows/generate-posts.yml`](.github/workflows/generate-posts.yml).
+
+Para mudar o volume ou a composição da semana, edite `semana` em [`data/pautas-cronograma.json`](data/pautas-cronograma.json): `opcoesPorVaga` controla quantos textos por vaga, e `vagas` controla quantas vagas e de qual produto (`produto: null` = tema diverso).
 
 ## Créditos de imagem
 
@@ -90,7 +93,7 @@ O nome do fotógrafo do Unsplash é incluído automaticamente como comentário H
 data/                           # arquivos de referência (cronograma, prompt do redator, manual de marca)
 src/
   config.js                     # carrega e valida variáveis de ambiente
-  queue.js                      # controle de fila (status.json) + seleção das próximas pautas
+  queue.js                      # vagas da semana, fila (status.json) e categoria por produto
   anthropic.js                  # pesquisa (web_search) e redação (saída estruturada via tool use)
   unsplash.js                   # busca e download da imagem de capa
   wordpress.js                  # upload de mídia e criação do post via REST API
