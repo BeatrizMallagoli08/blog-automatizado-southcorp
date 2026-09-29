@@ -16,6 +16,5 @@ export function loadConfig() {
     unsplashAccessKey: required("UNSPLASH_ACCESS_KEY"),
     googleServiceAccountJson: process.env.GOOGLE_SERVICE_ACCOUNT_JSON || null,
     googleDriveFolderId: process.env.GOOGLE_DRIVE_FOLDER_ID || null,
-    postsPerRun: parseInt(process.env.POSTS_PER_RUN || "5", 10),
   };
 }
