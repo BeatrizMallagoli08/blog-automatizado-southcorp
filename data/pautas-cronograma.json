@@ -1,35 +1,345 @@
 {
-  "_comentario": "Fila de pautas pre-escritas (S012-S046), derivada de cronograma-editorial-southcorp.md. O script consome em ordem; quando acabar, gera pautas novas seguindo a mesma logica de frente por dia da semana.",
+  "_comentario": "Fila de pautas pre-escritas (S012-S046), derivada de cronograma-editorial-southcorp.md. A semana tem 4 vagas (2 de Seguro Garantia + 2 de tema diverso) e cada vaga rende 3 pautas DIFERENTES, para escolha editorial. O script consome a fila pre-escrita primeiro e, quando ela acaba para aquele produto, pesquisa e propoe pautas novas.",
+  "semana": {
+    "_comentario": "Estrutura da rodada semanal. opcoesPorVaga = quantos textos DIFERENTES o robo escreve para cada vaga; voce escolhe um e descarta os outros. produto null = vaga de tema diverso, que roda entre Engenharia, RC e Institucional.",
+    "opcoesPorVaga": 3,
+    "vagas": [
+      {
+        "id": "garantia-1",
+        "rotulo": "Seguro Garantia",
+        "produto": "Garantia"
+      },
+      {
+        "id": "garantia-2",
+        "rotulo": "Seguro Garantia",
+        "produto": "Garantia"
+      },
+      {
+        "id": "diverso-1",
+        "rotulo": "Tema diverso",
+        "produto": null
+      },
+      {
+        "id": "diverso-2",
+        "rotulo": "Tema diverso",
+        "produto": null
+      }
+    ]
+  },
+  "categoriaPorProduto": {
+    "_comentario": "Slug da categoria no WordPress para cada produto. Os slugs abaixo ja existem no site; se mudar de categoria la, mude aqui.",
+    "Garantia": "seguro-garantia",
+    "Engenharia": "seguro-risco-engenharia",
+    "RC": "seguro-responsabilidade-civil",
+    "Institucional": "geral"
+  },
   "grade": {
-    "1": { "frente": "Newsjacking & Visão de Futuro (O Sábio)", "foco": "Notícias da semana, clima, novas leis, decisões do STF", "categoriaSlug": "newsjacking" },
-    "2": { "frente": "Proteção de Pessoas & Cultura (Southlife)", "foco": "Benefícios, saúde mental, planos de saúde, retenção de talentos", "categoriaSlug": "southlife" },
-    "3": { "frente": "Linhas Financeiras & Riscos Invisíveis (Southcorp — Governança)", "foco": "D&O, E&O, Seguro Garantia Judicial", "categoriaSlug": "governanca" },
-    "4": { "frente": "Riscos Patrimoniais & Operacionais (Southcorp — Operação)", "foco": "Seguro empresarial, lucros cessantes, engenharia", "categoriaSlug": "engenharia" },
-    "5": { "frente": "Bastidores, Cultura do Sul & Prova Social (O Parceiro)", "foco": "Casos reais, orgulho regional, rotina consultiva", "categoriaSlug": "bastidores" }
+    "1": {
+      "frente": "Newsjacking & Visão de Futuro (O Sábio)",
+      "foco": "Notícias da semana, clima, novas leis, decisões do STF",
+      "categoriaSlug": "newsjacking"
+    },
+    "2": {
+      "frente": "Proteção de Pessoas & Cultura (Southlife)",
+      "foco": "Benefícios, saúde mental, planos de saúde, retenção de talentos",
+      "categoriaSlug": "southlife"
+    },
+    "3": {
+      "frente": "Linhas Financeiras & Riscos Invisíveis (Southcorp — Governança)",
+      "foco": "D&O, E&O, Seguro Garantia Judicial",
+      "categoriaSlug": "governanca"
+    },
+    "4": {
+      "frente": "Riscos Patrimoniais & Operacionais (Southcorp — Operação)",
+      "foco": "Seguro empresarial, lucros cessantes, engenharia",
+      "categoriaSlug": "engenharia"
+    },
+    "5": {
+      "frente": "Bastidores, Cultura do Sul & Prova Social (O Parceiro)",
+      "foco": "Casos reais, orgulho regional, rotina consultiva",
+      "categoriaSlug": "bastidores"
+    }
   },
   "pautas": [
-    { "codigo": "S012", "diaSemana": 1, "produto": "RC", "titulo": "Nova NR-1 e GRO: Quais as exigências para o PGR?", "keyword": "Nova NR-1 / Programa de Gerenciamento de Riscos", "h2s": ["Mudanças na fiscalização trabalhista da NR-1", "Impacto do PGR no passivo jurídico", "Papel da consultoria em riscos ocupacionais"], "backlinkExterno": "Gov.br (Trabalho)", "backlinkInterno": "contato/diagnóstico Southlife" },
-    { "codigo": "S013", "diaSemana": 2, "produto": "Garantia", "titulo": "Seguro Garantia Judicial: substituição de depósito recursal e penhora", "keyword": "Seguro Garantia Judicial", "h2s": ["O que é e quando usar", "Vantagens vs. fiança bancária", "Aceitação com base na CLT/CPC"], "backlinkExterno": "Art. 899 CLT", "backlinkInterno": "página de serviços Southcorp" },
-    { "codigo": "S014", "diaSemana": 3, "produto": "Engenharia", "titulo": "Seguro de Riscos de Engenharia: o que cobre a apólice de obras corporativas?", "keyword": "Seguro de Riscos de Engenharia", "h2s": ["Cobertura básica para danos materiais", "Responsabilidade Civil Cruzada", "Erros de projeto vs. danos da natureza"], "backlinkExterno": "dados CBIC", "backlinkInterno": null },
-    { "codigo": "S015", "diaSemana": 4, "produto": "RC", "titulo": "Seguro D&O para PME: responsabilidade civil de administradores e diretores", "keyword": "Seguro D&O para PME", "h2s": ["Desconsideração da personalidade jurídica", "Erros de gestão vs. boa-fé", "Por que PME precisa de governança"], "backlinkExterno": "jurisprudências STJ", "backlinkInterno": null },
-    { "codigo": "S016", "diaSemana": 5, "produto": "Institucional", "titulo": "Corretora de seguros corporativos: como escolher o parceiro estratégico?", "keyword": "Corretora de seguros corporativos", "h2s": ["Diferença técnica corretora vs. seguradora", "Fugir de apólices genéricas", "Modelo consultivo Southcorp"], "backlinkExterno": null, "backlinkInterno": "\"Quem Somos\"" },
-
-    { "codigo": "S022", "diaSemana": 1, "produto": "Engenharia", "titulo": "Seguro empresarial contra vendaval: como proteger a estrutura no Sul?", "keyword": "Seguro empresarial contra vendaval", "h2s": ["Fenômenos climáticos no Sul", "Lucros Cessantes", "Vendaval vs. granizo vs. danos elétricos"], "backlinkExterno": null, "backlinkInterno": "post de Engenharia (S014)" },
-    { "codigo": "S023", "diaSemana": 2, "produto": "Garantia", "titulo": "Seguro Garantia de Performance: o que é o Performance Bond?", "keyword": "Seguro Garantia de Performance / Performance Bond", "h2s": ["Blindar contratos de fornecimento", "Execução contratual vs. atraso de terceiros", "Análise de capacidade técnica/financeira"], "backlinkExterno": "Lei 14.133", "backlinkInterno": null },
-    { "codigo": "S024", "diaSemana": 3, "produto": "Garantia", "titulo": "Seguro garantia de término de obra: mitigar riscos em incorporações", "keyword": "Seguro garantia de término de obra", "h2s": ["Exigência de bancos financiadores", "Proteção investidor/comprador", "Sinistro por interrupção/abandono"], "backlinkExterno": null, "backlinkInterno": "S014" },
-    { "codigo": "S025", "diaSemana": 4, "produto": "RC", "titulo": "Seguro RC Profissional (E&O): o que é e quais profissões protege?", "keyword": "Seguro E&O", "h2s": ["Erros e omissões — custo de falha operacional", "Proteção para tech/engenharia/advocacia", "Custos de defesa judicial"], "backlinkExterno": null, "backlinkInterno": "S015" },
-    { "codigo": "S026", "diaSemana": 5, "produto": "Institucional", "titulo": "Plano de saúde empresarial PME: reduzir custos e reajuste por sinistralidade", "keyword": "Plano de saúde empresarial PME", "h2s": ["Impacto do uso inadequado no caixa", "Coparticipação inteligente", "Gestão preventiva com Southlife"], "backlinkExterno": null, "backlinkInterno": "S012" },
-
-    { "codigo": "S032", "diaSemana": 1, "produto": "Garantia", "titulo": "Custo do seguro garantia: fatores que definem a taxa de prêmio", "keyword": "Custo do seguro garantia", "h2s": ["Rating financeiro/balanço", "Selic e inflação nas garantias judiciais", "Como melhorar limite de aprovação"], "backlinkExterno": "Banco Central", "backlinkInterno": "S013" },
-    { "codigo": "S033", "diaSemana": 2, "produto": "Garantia", "titulo": "Seguro Garantia Licitante (Bid Bond): participar de licitações com segurança", "keyword": "Seguro Garantia Licitante / Bid Bond", "h2s": ["Exigências da Lei 14.133/21", "Vantagens vs. caução em dinheiro", "Desistência/desclassificação"], "backlinkExterno": "ComprasNet", "backlinkInterno": null },
-    { "codigo": "S034", "diaSemana": 3, "produto": "Engenharia", "titulo": "Sinistro em seguro de engenharia: como proceder e quais documentos apresentar", "keyword": "Sinistro em seguro de engenharia", "h2s": ["Ação imediata após dano", "Laudo pericial/vistorias", "Agilização via assessoria consultiva"], "backlinkExterno": null, "backlinkInterno": "S014" },
-    { "codigo": "S035", "diaSemana": 4, "produto": "RC", "titulo": "Seguro RC Geral: proteção contra danos a terceiros", "keyword": "Seguro de Responsabilidade Civil Geral / RC Geral", "h2s": ["RC Geral vs. Seguro Patrimonial", "Riscos operacionais", "Coberturas de carga/descarga e empregador"], "backlinkExterno": "Código Civil Art. 186/927", "backlinkInterno": null },
-    { "codigo": "S036", "diaSemana": 5, "produto": "Institucional", "titulo": "Co-corretagem em seguros corporativos: como funciona a parceria estratégica", "keyword": "Co-corretagem em seguros corporativos", "h2s": ["Riscos complexos sem estrutura interna", "Inteligência técnica da Southpar", "Transparência comercial"], "backlinkExterno": null, "backlinkInterno": "credenciamento Southpar" },
-
-    { "codigo": "S042", "diaSemana": 1, "produto": "RC", "titulo": "Erros de software e falhas na prestação de serviços tech", "keyword": "falhas na prestação de serviços tech / erros de software prejuízo", "h2s": ["Ecossistema tech no Sul", "Bug/atraso causando dano financeiro", "Seguro E&O para TI"], "backlinkExterno": null, "backlinkInterno": "S025" },
-    { "codigo": "S043", "diaSemana": 2, "produto": "Garantia", "titulo": "Seguro Garantia Aduaneira: destravar importação e trânsito aduaneiro", "keyword": "Seguro Garantia Aduaneira", "h2s": ["Operações reguladas pela Receita Federal", "Admissão temporária de equipamentos", "Evitar multas/atrasos portuários"], "backlinkExterno": "Receita Federal", "backlinkInterno": null },
-    { "codigo": "S044", "diaSemana": 3, "produto": "Engenharia", "titulo": "Seguro de Riscos de Engenharia para reformas: é obrigatório para imóveis comerciais?", "keyword": "Seguro de Riscos de Engenharia para reformas", "h2s": ["Exigências de condomínios logísticos", "Proteção proprietário/locatário", "Quebra de máquinas e eletrônicos"], "backlinkExterno": null, "backlinkInterno": "todos os posts de Engenharia anteriores" },
-    { "codigo": "S045", "diaSemana": 4, "produto": "RC", "titulo": "Responsabilidade civil do empregador: proteger a diretoria contra processos trabalhistas", "keyword": "Responsabilidade civil do empregador", "h2s": ["Nexo causal ambiente de trabalho/sinistro", "RC Geral Empregador vs. INSS", "Conformidade PGR/NR-1 reduz condenações"], "backlinkExterno": null, "backlinkInterno": "S012 (fecha o mês)" },
-    { "codigo": "S046", "diaSemana": 5, "produto": "Institucional", "titulo": "Auditoria de apólices de seguros corporativos: 5 erros fatais escondidos no contrato atual", "keyword": "Auditoria de apólices de seguros corporativos", "h2s": ["Subseguro e Cláusula de Rateio", "Franquias/carências incompatíveis com fluxo de caixa PME", "Teste definitivo do corretor presente no sinistro"], "backlinkExterno": null, "backlinkInterno": "pilares do mês + CTA para análise gratuita da apólice atual" }
+    {
+      "codigo": "S012",
+      "diaSemana": 1,
+      "produto": "RC",
+      "titulo": "Nova NR-1 e GRO: Quais as exigências para o PGR?",
+      "keyword": "Nova NR-1 / Programa de Gerenciamento de Riscos",
+      "h2s": [
+        "Mudanças na fiscalização trabalhista da NR-1",
+        "Impacto do PGR no passivo jurídico",
+        "Papel da consultoria em riscos ocupacionais"
+      ],
+      "backlinkExterno": "Gov.br (Trabalho)",
+      "backlinkInterno": "contato/diagnóstico Southlife"
+    },
+    {
+      "codigo": "S013",
+      "diaSemana": 2,
+      "produto": "Garantia",
+      "titulo": "Seguro Garantia Judicial: substituição de depósito recursal e penhora",
+      "keyword": "Seguro Garantia Judicial",
+      "h2s": [
+        "O que é e quando usar",
+        "Vantagens vs. fiança bancária",
+        "Aceitação com base na CLT/CPC"
+      ],
+      "backlinkExterno": "Art. 899 CLT",
+      "backlinkInterno": "página de serviços Southcorp"
+    },
+    {
+      "codigo": "S014",
+      "diaSemana": 3,
+      "produto": "Engenharia",
+      "titulo": "Seguro de Riscos de Engenharia: o que cobre a apólice de obras corporativas?",
+      "keyword": "Seguro de Riscos de Engenharia",
+      "h2s": [
+        "Cobertura básica para danos materiais",
+        "Responsabilidade Civil Cruzada",
+        "Erros de projeto vs. danos da natureza"
+      ],
+      "backlinkExterno": "dados CBIC",
+      "backlinkInterno": null
+    },
+    {
+      "codigo": "S015",
+      "diaSemana": 4,
+      "produto": "RC",
+      "titulo": "Seguro D&O para PME: responsabilidade civil de administradores e diretores",
+      "keyword": "Seguro D&O para PME",
+      "h2s": [
+        "Desconsideração da personalidade jurídica",
+        "Erros de gestão vs. boa-fé",
+        "Por que PME precisa de governança"
+      ],
+      "backlinkExterno": "jurisprudências STJ",
+      "backlinkInterno": null
+    },
+    {
+      "codigo": "S016",
+      "diaSemana": 5,
+      "produto": "Institucional",
+      "titulo": "Corretora de seguros corporativos: como escolher o parceiro estratégico?",
+      "keyword": "Corretora de seguros corporativos",
+      "h2s": [
+        "Diferença técnica corretora vs. seguradora",
+        "Fugir de apólices genéricas",
+        "Modelo consultivo Southcorp"
+      ],
+      "backlinkExterno": null,
+      "backlinkInterno": "\"Quem Somos\""
+    },
+    {
+      "codigo": "S022",
+      "diaSemana": 1,
+      "produto": "Engenharia",
+      "titulo": "Seguro empresarial contra vendaval: como proteger a estrutura no Sul?",
+      "keyword": "Seguro empresarial contra vendaval",
+      "h2s": [
+        "Fenômenos climáticos no Sul",
+        "Lucros Cessantes",
+        "Vendaval vs. granizo vs. danos elétricos"
+      ],
+      "backlinkExterno": null,
+      "backlinkInterno": "post de Engenharia (S014)"
+    },
+    {
+      "codigo": "S023",
+      "diaSemana": 2,
+      "produto": "Garantia",
+      "titulo": "Seguro Garantia de Performance: o que é o Performance Bond?",
+      "keyword": "Seguro Garantia de Performance / Performance Bond",
+      "h2s": [
+        "Blindar contratos de fornecimento",
+        "Execução contratual vs. atraso de terceiros",
+        "Análise de capacidade técnica/financeira"
+      ],
+      "backlinkExterno": "Lei 14.133",
+      "backlinkInterno": null
+    },
+    {
+      "codigo": "S024",
+      "diaSemana": 3,
+      "produto": "Garantia",
+      "titulo": "Seguro garantia de término de obra: mitigar riscos em incorporações",
+      "keyword": "Seguro garantia de término de obra",
+      "h2s": [
+        "Exigência de bancos financiadores",
+        "Proteção investidor/comprador",
+        "Sinistro por interrupção/abandono"
+      ],
+      "backlinkExterno": null,
+      "backlinkInterno": "S014"
+    },
+    {
+      "codigo": "S025",
+      "diaSemana": 4,
+      "produto": "RC",
+      "titulo": "Seguro RC Profissional (E&O): o que é e quais profissões protege?",
+      "keyword": "Seguro E&O",
+      "h2s": [
+        "Erros e omissões — custo de falha operacional",
+        "Proteção para tech/engenharia/advocacia",
+        "Custos de defesa judicial"
+      ],
+      "backlinkExterno": null,
+      "backlinkInterno": "S015"
+    },
+    {
+      "codigo": "S026",
+      "diaSemana": 5,
+      "produto": "Institucional",
+      "titulo": "Plano de saúde empresarial PME: reduzir custos e reajuste por sinistralidade",
+      "keyword": "Plano de saúde empresarial PME",
+      "h2s": [
+        "Impacto do uso inadequado no caixa",
+        "Coparticipação inteligente",
+        "Gestão preventiva com Southlife"
+      ],
+      "backlinkExterno": null,
+      "backlinkInterno": "S012"
+    },
+    {
+      "codigo": "S032",
+      "diaSemana": 1,
+      "produto": "Garantia",
+      "titulo": "Custo do seguro garantia: fatores que definem a taxa de prêmio",
+      "keyword": "Custo do seguro garantia",
+      "h2s": [
+        "Rating financeiro/balanço",
+        "Selic e inflação nas garantias judiciais",
+        "Como melhorar limite de aprovação"
+      ],
+      "backlinkExterno": "Banco Central",
+      "backlinkInterno": "S013"
+    },
+    {
+      "codigo": "S033",
+      "diaSemana": 2,
+      "produto": "Garantia",
+      "titulo": "Seguro Garantia Licitante (Bid Bond): participar de licitações com segurança",
+      "keyword": "Seguro Garantia Licitante / Bid Bond",
+      "h2s": [
+        "Exigências da Lei 14.133/21",
+        "Vantagens vs. caução em dinheiro",
+        "Desistência/desclassificação"
+      ],
+      "backlinkExterno": "ComprasNet",
+      "backlinkInterno": null
+    },
+    {
+      "codigo": "S034",
+      "diaSemana": 3,
+      "produto": "Engenharia",
+      "titulo": "Sinistro em seguro de engenharia: como proceder e quais documentos apresentar",
+      "keyword": "Sinistro em seguro de engenharia",
+      "h2s": [
+        "Ação imediata após dano",
+        "Laudo pericial/vistorias",
+        "Agilização via assessoria consultiva"
+      ],
+      "backlinkExterno": null,
+      "backlinkInterno": "S014"
+    },
+    {
+      "codigo": "S035",
+      "diaSemana": 4,
+      "produto": "RC",
+      "titulo": "Seguro RC Geral: proteção contra danos a terceiros",
+      "keyword": "Seguro de Responsabilidade Civil Geral / RC Geral",
+      "h2s": [
+        "RC Geral vs. Seguro Patrimonial",
+        "Riscos operacionais",
+        "Coberturas de carga/descarga e empregador"
+      ],
+      "backlinkExterno": "Código Civil Art. 186/927",
+      "backlinkInterno": null
+    },
+    {
+      "codigo": "S036",
+      "diaSemana": 5,
+      "produto": "Institucional",
+      "titulo": "Co-corretagem em seguros corporativos: como funciona a parceria estratégica",
+      "keyword": "Co-corretagem em seguros corporativos",
+      "h2s": [
+        "Riscos complexos sem estrutura interna",
+        "Inteligência técnica da Southpar",
+        "Transparência comercial"
+      ],
+      "backlinkExterno": null,
+      "backlinkInterno": "credenciamento Southpar"
+    },
+    {
+      "codigo": "S042",
+      "diaSemana": 1,
+      "produto": "RC",
+      "titulo": "Erros de software e falhas na prestação de serviços tech",
+      "keyword": "falhas na prestação de serviços tech / erros de software prejuízo",
+      "h2s": [
+        "Ecossistema tech no Sul",
+        "Bug/atraso causando dano financeiro",
+        "Seguro E&O para TI"
+      ],
+      "backlinkExterno": null,
+      "backlinkInterno": "S025"
+    },
+    {
+      "codigo": "S043",
+      "diaSemana": 2,
+      "produto": "Garantia",
+      "titulo": "Seguro Garantia Aduaneira: destravar importação e trânsito aduaneiro",
+      "keyword": "Seguro Garantia Aduaneira",
+      "h2s": [
+        "Operações reguladas pela Receita Federal",
+        "Admissão temporária de equipamentos",
+        "Evitar multas/atrasos portuários"
+      ],
+      "backlinkExterno": "Receita Federal",
+      "backlinkInterno": null
+    },
+    {
+      "codigo": "S044",
+      "diaSemana": 3,
+      "produto": "Engenharia",
+      "titulo": "Seguro de Riscos de Engenharia para reformas: é obrigatório para imóveis comerciais?",
+      "keyword": "Seguro de Riscos de Engenharia para reformas",
+      "h2s": [
+        "Exigências de condomínios logísticos",
+        "Proteção proprietário/locatário",
+        "Quebra de máquinas e eletrônicos"
+      ],
+      "backlinkExterno": null,
+      "backlinkInterno": "todos os posts de Engenharia anteriores"
+    },
+    {
+      "codigo": "S045",
+      "diaSemana": 4,
+      "produto": "RC",
+      "titulo": "Responsabilidade civil do empregador: proteger a diretoria contra processos trabalhistas",
+      "keyword": "Responsabilidade civil do empregador",
+      "h2s": [
+        "Nexo causal ambiente de trabalho/sinistro",
+        "RC Geral Empregador vs. INSS",
+        "Conformidade PGR/NR-1 reduz condenações"
+      ],
+      "backlinkExterno": null,
+      "backlinkInterno": "S012 (fecha o mês)"
+    },
+    {
+      "codigo": "S046",
+      "diaSemana": 5,
+      "produto": "Institucional",
+      "titulo": "Auditoria de apólices de seguros corporativos: 5 erros fatais escondidos no contrato atual",
+      "keyword": "Auditoria de apólices de seguros corporativos",
+      "h2s": [
+        "Subseguro e Cláusula de Rateio",
+        "Franquias/carências incompatíveis com fluxo de caixa PME",
+        "Teste definitivo do corretor presente no sinistro"
+      ],
+      "backlinkExterno": null,
+      "backlinkInterno": "pilares do mês + CTA para análise gratuita da apólice atual"
+    }
   ]
 }
