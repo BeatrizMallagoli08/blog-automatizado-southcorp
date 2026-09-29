@@ -154,12 +154,15 @@ const PROPOSE_PAUTA_TOOL = {
 
 /**
  * Etapa 0 (quando a fila pré-escrita acaba) — pesquisa e propõe uma pauta nova
- * seguindo a frente do dia da semana e a proporção de produto (40/30/30).
+ * para a vaga da semana, dentro do produto daquela vaga.
+ *
+ * `evitar` traz os títulos que esta pauta NÃO pode repetir: as outras opções
+ * já escolhidas para a mesma vaga, mais o histórico recente. É o que garante
+ * que as três opções de uma vaga sejam três assuntos diferentes, e não três
+ * maneiras de escrever o mesmo assunto.
  */
-export async function generateNewPauta(client, { diaSemana, frenteInfo, produto, status }) {
-  const jaUsados = [
-    ...status.generatedPautas.map((p) => p.titulo),
-  ].join("; ") || "nenhum ainda";
+export async function generateNewPauta(client, { produto, frenteInfo, evitar = [], vaga }) {
+  const jaUsados = evitar.length ? evitar.join("; ") : "nenhum ainda";
 
   const research = await client.messages.create({
     model: MODEL,
@@ -173,7 +176,9 @@ export async function generateNewPauta(client, { diaSemana, frenteInfo, produto,
         role: "user",
         content:
           `Levante 2-3 temas atuais e relevantes para a frente "${frenteInfo.frente}" (foco: ${frenteInfo.foco}), ` +
-          `relacionados ao produto "${produto}" da South. Já foram usados: ${jaUsados}. Não repita temas.`,
+          `relacionados ao produto "${produto}" da South. ` +
+          `Estes assuntos JÁ ESTÃO COBERTOS e não podem ser repetidos nem parafraseados: ${jaUsados}. ` +
+          `Traga ângulos genuinamente diferentes desses.`,
       },
     ],
   });
@@ -195,8 +200,13 @@ export async function generateNewPauta(client, { diaSemana, frenteInfo, produto,
       {
         role: "user",
         content:
-          `Frente do dia: ${frenteInfo.frente}\nFoco: ${frenteInfo.foco}\nProduto a priorizar: ${produto}\n\n` +
-          `Pesquisa de temas atuais:\n${researchText}\n\nProponha UMA pauta nova, específica e não genérica.`,
+          `Frente editorial: ${frenteInfo.frente}\nFoco: ${frenteInfo.foco}\n` +
+          `Produto a priorizar: ${produto}\n` +
+          `Vaga da semana: ${vaga?.rotulo || produto}\n\n` +
+          `Pesquisa de temas atuais:\n${researchText}\n\n` +
+          `Assuntos que NÃO podem ser repetidos: ${jaUsados}\n\n` +
+          `Proponha UMA pauta nova, específica e não genérica, com assunto ` +
+          `claramente distinto dos que não podem ser repetidos.`,
       },
     ],
   });
