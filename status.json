@@ -1,6 +1,12 @@
 {
   "producedCodes": [],
   "generatedPautas": [],
-  "productCounts": { "Garantia": 0, "Engenharia": 0, "RC": 0, "Institucional": 0 },
-  "lastRun": null
+  "productCounts": {
+    "Garantia": 0,
+    "Engenharia": 0,
+    "RC": 0,
+    "Institucional": 0
+  },
+  "lastRun": null,
+  "runCount": 1
 }
